@@ -7,7 +7,7 @@ const wait = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 exports.scrapeProductData = async (url) => {
   const browser = await puppeteer.launch({
     args: ['--no-sandbox', '--disable-setuid-sandbox'],
-    headless: true
+    headless: 'new'
   });
   
   
