@@ -12,14 +12,19 @@ exports.resolveUrl = async (shortenedUrl) => {
     return shortenedUrl; // Mantém o link original para links de afiliado do Mercado Livre
   }
   
+  const isProduction = process.env.AWS_LAMBDA_FUNCTION_VERSION || process.env.NODE_ENV === 'production';
+
   const browser = await puppeteer.launch({
     args: chromium.args,
     defaultViewport: chromium.defaultViewport,
-    executablePath: await chromium.executablePath,  // Sem fallback manual
+    executablePath: isProduction 
+      ? await chromium.executablePath 
+      : undefined,  // No local, puppeteer usa o Chrome instalado
     headless: chromium.headless,
     ignoreHTTPSErrors: true
   });
   
+
   try {
     console.log(`Resolvendo URL: ${shortenedUrl}`);
     const page = await browser.newPage();

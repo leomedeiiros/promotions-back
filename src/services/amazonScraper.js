@@ -3,13 +3,18 @@ const chromium = require('chrome-aws-lambda');
 const puppeteer = require('puppeteer-core');
 
 exports.scrapeProductData = async (url) => {
+  const isProduction = process.env.AWS_LAMBDA_FUNCTION_VERSION || process.env.NODE_ENV === 'production';
+
   const browser = await puppeteer.launch({
     args: chromium.args,
     defaultViewport: chromium.defaultViewport,
-    executablePath: await chromium.executablePath,  // Sem fallback manual
+    executablePath: isProduction 
+      ? await chromium.executablePath 
+      : undefined,  // No local, puppeteer usa o Chrome instalado
     headless: chromium.headless,
     ignoreHTTPSErrors: true
   });
+  
   try {
     const page = await browser.newPage();
 
