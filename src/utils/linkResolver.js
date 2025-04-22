@@ -14,9 +14,12 @@ exports.resolveUrl = async (shortenedUrl) => {
   
   const browser = await puppeteer.launch({
     args: chromium.args,
-    executablePath: await chromium.executablePath || '/usr/bin/google-chrome',
+    defaultViewport: chromium.defaultViewport,
+    executablePath: process.env.NODE_ENV === 'production' 
+      ? await chromium.executablePath 
+      : undefined,
     headless: chromium.headless,
-    defaultViewport: { width: 1366, height: 768 }
+    ignoreHTTPSErrors: true
   });
   
   try {

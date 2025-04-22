@@ -6,8 +6,11 @@ exports.scrapeProductData = async (url) => {
   const browser = await puppeteer.launch({
     args: chromium.args,
     defaultViewport: chromium.defaultViewport,
-    executablePath: await chromium.executablePath,
+    executablePath: process.env.NODE_ENV === 'production' 
+      ? await chromium.executablePath 
+      : undefined,
     headless: chromium.headless,
+    ignoreHTTPSErrors: true
   });
 
   try {

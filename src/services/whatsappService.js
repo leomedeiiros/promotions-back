@@ -7,8 +7,11 @@ exports.sendMessage = async (message, chatName) => {
   const browser = await puppeteer.launch({
     args: chromium.args,
     defaultViewport: chromium.defaultViewport,
-    executablePath: await chromium.executablePath,
-    headless: false // WhatsApp precisa ser visível
+    executablePath: process.env.NODE_ENV === 'production' 
+      ? await chromium.executablePath 
+      : undefined,
+    headless: chromium.headless,
+    ignoreHTTPSErrors: true
   });
 
   try {
