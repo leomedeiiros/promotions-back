@@ -1,6 +1,7 @@
+# Imagem base com suporte ao Puppeteer
 FROM node:18-slim
 
-# Instalar dependências do Chromium
+# Instala dependências do Chromium
 RUN apt-get update && apt-get install -y \
     wget \
     ca-certificates \
@@ -19,21 +20,21 @@ RUN apt-get update && apt-get install -y \
     libxdamage1 \
     libxrandr2 \
     xdg-utils \
-    --no-install-recommends \
- && apt-get clean \
- && rm -rf /var/lib/apt/lists/*
+    --no-install-recommends && \
+    apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# Criar diretório app
+# Cria diretório de app
 WORKDIR /app
 
-# Copiar arquivos
+# Copia tudo
 COPY . .
 
-# Instalar dependências
+# Instala dependências Node.js
 RUN npm install
 
-# Expor porta
+# Expõe a porta que o Railway usa
+ENV PORT=3000
 EXPOSE 3000
 
-# Rodar app
+# Start da aplicação
 CMD ["npm", "start"]
