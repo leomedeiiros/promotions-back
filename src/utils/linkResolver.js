@@ -15,11 +15,10 @@ exports.resolveUrl = async (shortenedUrl) => {
   const browser = await puppeteer.launch({
     args: chromium.args,
     defaultViewport: chromium.defaultViewport,
-    executablePath: await chromium.executablePath || '/usr/bin/google-chrome',
+    executablePath: await chromium.executablePath,  // Sem fallback manual
     headless: chromium.headless,
     ignoreHTTPSErrors: true
   });
-  
   
   try {
     console.log(`Resolvendo URL: ${shortenedUrl}`);
