@@ -4,15 +4,11 @@ const puppeteer = require('puppeteer-core');
 const wait = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
 exports.sendMessage = async (message, chatName) => {
-  const isProduction = process.env.AWS_LAMBDA_FUNCTION_VERSION || process.env.NODE_ENV === 'production';
-
   const browser = await puppeteer.launch({
     args: chromium.args,
     defaultViewport: chromium.defaultViewport,
-    executablePath: isProduction 
-      ? await chromium.executablePath 
-      : undefined,  // No local, puppeteer usa o Chrome instalado
-    headless: chromium.headless,
+    executablePath: await chromium.executablePath || '/usr/bin/chromium-browser',
+    headless: true,
     ignoreHTTPSErrors: true
   });
   
