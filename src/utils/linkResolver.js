@@ -1,5 +1,6 @@
 // backend/src/utils/linkResolver.js
-const puppeteer = require('puppeteer');
+const chromium = require('chrome-aws-lambda');
+const puppeteer = require('puppeteer-core');
 
 // Função auxiliar para substituir waitForTimeout
 const wait = (ms) => new Promise(resolve => setTimeout(resolve, ms));
@@ -12,8 +13,9 @@ exports.resolveUrl = async (shortenedUrl) => {
   }
   
   const browser = await puppeteer.launch({
-    headless: 'new',
-    args: ['--no-sandbox', '--disable-setuid-sandbox'],
+    args: chromium.args,
+    executablePath: await chromium.executablePath || '/usr/bin/google-chrome',
+    headless: chromium.headless,
     defaultViewport: { width: 1366, height: 768 }
   });
   
