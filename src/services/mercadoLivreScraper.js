@@ -1,18 +1,15 @@
 // backend/src/services/mercadoLivreScraper.js
-const chromium = require('chrome-aws-lambda');
-const puppeteer = require('puppeteer-core');
+const puppeteer = require('puppeteer');
 
 // Função auxiliar para substituir waitForTimeout
 const wait = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
 exports.scrapeProductData = async (url) => {
   const browser = await puppeteer.launch({
-    args: chromium.args,
-    defaultViewport: chromium.defaultViewport,
-    executablePath: await chromium.executablePath || '/usr/bin/chromium-browser',
-    headless: true,
-    ignoreHTTPSErrors: true
+    args: ['--no-sandbox', '--disable-setuid-sandbox'],
+    headless: true
   });
+  
   
   
   try {

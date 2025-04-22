@@ -1,15 +1,13 @@
 // backend/src/services/amazonScraper.js
-const chromium = require('chrome-aws-lambda');
-const puppeteer = require('puppeteer-core');
+const puppeteer = require('puppeteer');
+
 
 exports.scrapeProductData = async (url) => {
   const browser = await puppeteer.launch({
-    args: chromium.args,
-    defaultViewport: chromium.defaultViewport,
-    executablePath: await chromium.executablePath || '/usr/bin/chromium-browser',
-    headless: true,
-    ignoreHTTPSErrors: true
+    args: ['--no-sandbox', '--disable-setuid-sandbox'],
+    headless: true
   });
+  
   
   try {
     const page = await browser.newPage();
